@@ -1,0 +1,43 @@
+install.packages(c(
+  "biomaRt",
+  "coin",
+  "cowplot",
+  "data.table",
+  "dplyr",
+  "e1071",
+  "Cairo",
+  "ess",
+  "GGally",
+  "ggplot2",
+  "glmnet",
+  "haven",
+  "igraph",
+  "kableExtra",
+  "kknn",
+  "knitr",
+  "lgr",
+  "MASS",
+  "mclust",
+  "mlr3verse",
+  "neuralnet",
+  "partykit",
+  "precrec",
+  "pROC",
+  "quarto",
+  "ranger",
+  "readr",
+  "remotes",
+  "reshape",
+  "rmarkdown",
+  "roxygen",
+  "rpart",
+  "tableone",
+  "testthat",
+  "tidyverse",
+  "xgboost"))
+
+remotes::install_github("mlr-org/mlr3extralearners@*release")
+remotes::install_github("perishky/r_jive")
+remotes::install_github("perishky/meffonym")
+remotes::install_github("perishky/ewaff")
+remotes::install_github("perishky/meffil")

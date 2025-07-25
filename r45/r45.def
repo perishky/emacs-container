@@ -1,0 +1,109 @@
+Bootstrap: docker
+From: ubuntu:24.04
+
+%post
+    BASE_DIR="/opt/ide"
+    EMACS_BASE="$BASE_DIR/user-emacs"
+    R_LIBS_USER="$BASE_DIR/user-R"
+
+    mkdir -p $EMACS_BASE
+    mkdir -p $R_LIBS_USER
+
+    # Install essential and useful packages
+    apt-get update -y
+    apt-get install -y \
+        apt-transport-https \
+        build-essential \
+        ca-certificates \
+        curl \
+        git \
+        gnupg \
+        htop \
+        less \
+	libcairo2 \
+	libcairo2-dev \
+	libcurl4-openssl-dev \
+        libfontconfig1-dev \
+        libfribidi-dev \
+        libfreetype6-dev \
+        libharfbuzz-dev \
+        libjpeg-dev \
+        libpng-dev \
+        libssl-dev \
+        libtiff5-dev \
+        libxml2-dev \
+        lsb-release \
+        man-db \
+	nscd \
+	pandoc \
+        pkg-config \
+        software-properties-common \
+	sudo \
+        tree \
+        vim \
+        wget
+	
+    # install Emacs
+    add-apt-repository ppa:ubuntuhandbook1/emacs
+    apt-get update -y
+    apt-get install -y emacs emacs-common
+
+    # install quarto
+    QUARTO_VERSION=1.7.32
+    QUARTO_URL=https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb
+    curl -o quarto-linux-amd64.deb -L ${QUARTO_URL} && \
+        DEBIAN_FRONTEND=noninteractive apt-get install -f -y ./quarto-linux-amd64.deb && \
+        rm quarto-linux-amd64.deb
+
+    # install R
+    wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+    add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu noble-cran40/"
+    apt-get update -y
+    apt-get install -y r-base r-base-dev
+    
+    # Clean up to reduce image size
+    apt-get autoremove -y
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LC_ALL=C
+    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    export BASE_DIR="/opt/ide"
+    export EMACS_BASE="$BASE_DIR/user-emacs"
+    export R_LIBS_USER="$BASE_DIR/user-R"
+    export R_LIBS="$BASE_DIR/user-R"
+
+%runscript
+    mkdir -p $EMACS_BASE
+    mkdir -p $R_LIBS_USER
+    exec env HOME=$EMACS_BASE emacs --user="" -nw "$@"
+    
+%labels
+    Author Matthew Suderman
+    Version v1.0
+    Description Container with Emacs and R
+
+%help
+    This container includes:
+    - Ubuntu 24.04
+    - Emacs 30.1
+    - R 4.5
+
+    Build (5 minutes):
+    apptainer build r45.sif r45.def
+
+    Usage:
+    CONFIG_DIR=$HOME/.ide/r45
+    mkdir -p $CONFIG_DIR
+    apptainer run -B $CONFIG_DIR:/opt/ide r45.sif
+
+    ## allow access to an additional folder
+    apptainer run -B $CONFIG_DIR:/opt/ide -B /path/to/dataset r45.sif
+
+    ## some systems may need this
+    apptainer run --fakeroot -B $CONFIG_DIR:/opt/ide r45.sif
+
+
+
+

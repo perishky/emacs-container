@@ -1,10 +1,4 @@
-apptainer build ide.sif ide.def
-apptainer run ide.sif
-apptainer exec ide.sif emacs
+# Containerized programming environments using Emacs
 
-
-
-
-apptainer build --sandbox development/ docker://alpine
-apptainer shell --writable development/
-
+* [Emacs 30.1 with R 4.5](r45)
+* [Emacs 30.1 with Python 3.12](py312) 

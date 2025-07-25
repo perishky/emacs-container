@@ -1,0 +1,107 @@
+;; M-x package-refresh-contents
+;; M-x package-install 
+
+(global-font-lock-mode 1)
+
+(setq auto-save-default nil)
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+
+(require 'use-package)
+
+(use-package markdown-mode
+             :ensure t
+             :mode ("README\\.md\\'" . gfm-mode)
+             :init (setq markdown-command "multimarkdown")
+             :bind (:map markdown-mode-map
+                         ("C-c C-e" . markdown-do)))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+ 
+ (setq treesit-language-source-alist
+      '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+        (html "https://github.com/tree-sitter/tree-sitter-html")
+        (java "https://github.com/tree-sitter/tree-sitter-java")
+        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+        (c "https://github.com/tree-sitter/tree-sitter-c")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (make "https://github.com/alemuller/tree-sitter-make")
+        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (r "https://github.com/r-lib/tree-sitter-r")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+;; * to install a single language: M-x treesit-install-language-grammar
+;; * to install all in the list: (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+
+(use-package tree-sitter-ess-r
+  :ensure t
+  :after (ess)
+  :hook (ess-r-mode . tree-sitter-ess-r-mode-activate))
+
+(use-package ess
+  :init
+  (setq ess-style 'RStudio)
+  :mode
+  (("\\.[rR]" . ess-r-mode)
+   ;; If you also use julia or some other language
+   ("\\.[jJ][lL]" . ess-julia-mode))
+  ;; Add my personal key-map
+  :config
+  ;; ESS process (print all)
+  (setq ess-eval-visibly-p t)
+  ;; Silence asking for aprenth directory
+  (setq ess-ask-for-ess-directory nil)
+  ;; Syntax highlights
+  (setq ess-R-font-lock-keywords
+        '((ess-R-fl-keyword:keywords . t)
+          (ess-R-fl-keyword:constants . t)
+          (ess-R-fl-keyword:modifiers . t)
+          (ess-R-fl-keyword:fun-defs . t)
+          (ess-R-fl-keyword:assign-ops . t)
+          (ess-R-fl-keyword:%op% . t)
+          (ess-fl-keyword:fun-calls . t)
+          (ess-fl-keyword:numbers . t)
+          (ess-fl-keyword:operators)
+          (ess-fl-keyword:delimiters)
+          (ess-fl-keyword:=)
+          (ess-R-fl-keyword:F&T . t))))
+
+
+;; R markdown
+(use-package polymode
+  :ensure t)
+(use-package poly-R
+  :ensure t)
+(use-package poly-markdown
+  :ensure t)
+
+(use-package quarto-mode
+  :ensure t)
+
+(add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
+
+;; R modes
+(add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
+(add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
+(add-to-list 'auto-mode-alist '("\\.Rmd" . quarto-mode))
+(add-to-list 'auto-mode-alist '("\\.rmd" . quarto-mode))
+
+
+
