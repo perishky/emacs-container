@@ -1,21 +1,5 @@
-# Emacs with Python
+# Emacs 30.1 with Python 3.12
 
-## Build container image py312.sif
 
-```
-bash scripts/build.sh py312
-```
-
-## Install 
-
-```
-bash scripts/configure.sh config.env py312
-```
-
-## Run
-
-```
-bash scripts/run.sh config.env py312.sif
-```
 
 

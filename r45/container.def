@@ -2,12 +2,12 @@ Bootstrap: docker
 From: ubuntu:24.04
 
 %post
-    BASE_DIR="/opt/ide"
-    EMACS_BASE="$BASE_DIR/user-emacs"
-    R_LIBS_USER="$BASE_DIR/user-R"
+    BASE=/opt/ide
+    EMACS_DIR=$BASE/user-emacs
+    R_DIR = $BASE/user-R
 
-    mkdir -p $EMACS_BASE
-    mkdir -p $R_LIBS_USER
+    mkdir -p $EMACS_DIR
+    mkdir -p $R_DIR
 
     # install linux libraries
     apt-get update -y
@@ -69,15 +69,15 @@ From: ubuntu:24.04
 %environment
     export LC_ALL=C
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-    export BASE_DIR="/opt/ide"
-    export EMACS_BASE="$BASE_DIR/user-emacs"
+    export BASE="/opt/ide"
+    export EMACS_DIR="$BASE_DIR/user-emacs"
     export R_LIBS_USER="$BASE_DIR/user-R"
-    export R_LIBS="$BASE_DIR/user-R"
+    export R_LIBS="$R_LIBS_USER"
 
 %runscript
-    mkdir -p $EMACS_BASE
+    mkdir -p $EMACS_DIR
     mkdir -p $R_LIBS_USER
-    exec env HOME=$EMACS_BASE emacs --user="" -nw "$@"
+    exec env HOME=$EMACS_DIR emacs --user="" -nw "$@"
     
 %labels
     Author Matthew Suderman
@@ -90,20 +90,10 @@ From: ubuntu:24.04
     - Emacs 30.1
     - R 4.5
 
-    Build (5 minutes):
-    	(cd r45 && apptainer build ../r45.sif container.def)
-
-    Configure:
-        BASE_DIR=$HOME/.ide/r45
-        mkdir -p $BASE_DIR
-	(cd r45 && apptainer exec -B $BASE_DIR:/opt/ide -B $(pwd) ../r45.sif \
-	 Rscript install-r-packages.r)
-
     Usage:
-    	apptainer run -B $BASE_DIR:/opt/ide -B $(pwd) r45.sif
+    	apptainer run -B $BASE:/opt/ide -B $(pwd) r45.sif [path/to/files/to/edit]
+        ## Note: some systems may need the container to run with '--fakeroot'
 
-    	## some systems may need this
-    	apptainer run --fakeroot -B $BASE_DIR:/opt/ide r45.sif
 
 
 

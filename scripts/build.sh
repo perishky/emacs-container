@@ -3,5 +3,7 @@
 NAME=$1
 
 cd $NAME
-apptainer build ../$NAME.sif container.def
+mkdir -p out
+
+apptainer build out/$NAME.sif container.def
 
