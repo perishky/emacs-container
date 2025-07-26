@@ -1,39 +1,21 @@
 # Emacs with R
 
-## Preparation
+## Build container image r45.sif
 
 ```
-CONFIG_DIR=$HOME/.ide/r45
-mkdir -p $CONFIG_DIR
-cp dot-emacs $CONFIG_DIR/user-emacs/.emacs
+bash scripts/build.sh r45
 ```
 
-## Installing R packages
-
-R will not have any packages installed, 
-these can be installed the first time.
+## Install 
 
 ```
-apptainer run -B $CONFIG_DIR:/opt/ide r45.sif
-Rscript install-r-packages.r
+bash scripts/configure.sh config.env r45
 ```
 
-## Running emacs
+## Run
 
 ```
-apptainer run -B $CONFIG_DIR:/opt/ide r45.sif
+bash scripts/run.sh config.env r45.sif
 ```
 
-Allow access to an additional folder
-```
-apptainer run -B $CONFIG_DIR:/opt/ide -B /path/to/folder r45.sif
-```
 
-Some systems may need the container to be run in 'fakeroot' mode.
-```
-apptainer run --fakeroot -B $CONFIG_DIR:/opt/ide r45.sif
-```
-
-## Porting to another system
-
-Just copy `r45.sif` and the `$CONFIG_DIR` folder.

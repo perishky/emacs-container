@@ -1,41 +1,21 @@
 # Emacs with Python
 
-## Preparation
+## Build container image py312.sif
 
 ```
-CONFIG_DIR=$HOME/.ide/py312
-mkdir -p $CONFIG_DIR
-cp dot-emacs $CONFIG_DIR/user-emacs/.emacs
+bash scripts/build.sh py312
 ```
 
-## Installing Python packages
-
-Python will not have any packages installed, 
-these can be installed the first time.
+## Install 
 
 ```
-apptainer run -B $CONFIG_DIR:/opt/ide py312.sif
-pip3 install -r requirements
+bash scripts/configure.sh config.env py312
 ```
 
-## Running emacs
+## Run
 
 ```
-apptainer run -B $CONFIG_DIR:/opt/ide py312.sif
+bash scripts/run.sh config.env py312.sif
 ```
-
-Allow access to an additional folder
-```
-apptainer run -B $CONFIG_DIR:/opt/ide -B /path/to/folder py312.sif
-```
-
-Some systems may need the container to be run in 'fakeroot' mode.
-```
-apptainer run --fakeroot -B $CONFIG_DIR:/opt/ide py312.sif
-```
-
-## Porting to another system
-
-Just copy `py312.sif` and the `$CONFIG_DIR` folder.
 
 

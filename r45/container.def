@@ -9,7 +9,7 @@ From: ubuntu:24.04
     mkdir -p $EMACS_BASE
     mkdir -p $R_LIBS_USER
 
-    # Install essential and useful packages
+    # install linux libraries
     apt-get update -y
     apt-get install -y \
         apt-transport-https \
@@ -20,9 +20,9 @@ From: ubuntu:24.04
         gnupg \
         htop \
         less \
-	libcairo2 \
-	libcairo2-dev \
-	libcurl4-openssl-dev \
+        libcairo2 \
+        libcairo2-dev \
+        libcurl4-openssl-dev \
         libfontconfig1-dev \
         libfribidi-dev \
         libfreetype6-dev \
@@ -34,34 +34,34 @@ From: ubuntu:24.04
         libxml2-dev \
         lsb-release \
         man-db \
-	nscd \
-	pandoc \
+        nscd \
+        pandoc \
         pkg-config \
         software-properties-common \
-	sudo \
+        sudo \
         tree \
         vim \
         wget
-	
-    # install Emacs
+
+    ## install emacs
     add-apt-repository ppa:ubuntuhandbook1/emacs
     apt-get update -y
     apt-get install -y emacs emacs-common
 
-    # install quarto
+    ## install quarto
     QUARTO_VERSION=1.7.32
     QUARTO_URL=https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb
     curl -o quarto-linux-amd64.deb -L ${QUARTO_URL} && \
-        DEBIAN_FRONTEND=noninteractive apt-get install -f -y ./quarto-linux-amd64.deb && \
-        rm quarto-linux-amd64.deb
+    	 DEBIAN_FRONTEND=noninteractive apt-get install -f -y ./quarto-linux-amd64.deb && \
+   	 rm quarto-linux-amd64.deb
 
-    # install R
+    ## install r
     wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
     add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu noble-cran40/"
     apt-get update -y
     apt-get install -y r-base r-base-dev
-    
-    # Clean up to reduce image size
+
+    ## clean up    
     apt-get autoremove -y
     apt-get clean
     rm -rf /var/lib/apt/lists/*
@@ -91,18 +91,19 @@ From: ubuntu:24.04
     - R 4.5
 
     Build (5 minutes):
-    apptainer build r45.sif r45.def
+    	(cd r45 && apptainer build ../r45.sif container.def)
+
+    Configure:
+        BASE_DIR=$HOME/.ide/r45
+        mkdir -p $BASE_DIR
+	(cd r45 && apptainer exec -B $BASE_DIR:/opt/ide -B $(pwd) ../r45.sif \
+	 Rscript install-r-packages.r)
 
     Usage:
-    CONFIG_DIR=$HOME/.ide/r45
-    mkdir -p $CONFIG_DIR
-    apptainer run -B $CONFIG_DIR:/opt/ide r45.sif
+    	apptainer run -B $BASE_DIR:/opt/ide -B $(pwd) r45.sif
 
-    ## allow access to an additional folder
-    apptainer run -B $CONFIG_DIR:/opt/ide -B /path/to/dataset r45.sif
-
-    ## some systems may need this
-    apptainer run --fakeroot -B $CONFIG_DIR:/opt/ide r45.sif
+    	## some systems may need this
+    	apptainer run --fakeroot -B $BASE_DIR:/opt/ide r45.sif
 
 
 
