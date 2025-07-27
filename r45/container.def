@@ -4,7 +4,7 @@ From: ubuntu:24.04
 %post
     BASE=/opt/ide
     EMACS_DIR=$BASE/user-emacs
-    R_DIR = $BASE/user-R
+    R_DIR=$BASE/user-R
 
     mkdir -p $EMACS_DIR
     mkdir -p $R_DIR
@@ -15,6 +15,7 @@ From: ubuntu:24.04
         apt-transport-https \
         build-essential \
         ca-certificates \
+	cmake \
         curl \
         git \
         gnupg \
@@ -70,9 +71,13 @@ From: ubuntu:24.04
     export LC_ALL=C
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     export BASE="/opt/ide"
-    export EMACS_DIR="$BASE_DIR/user-emacs"
-    export R_LIBS_USER="$BASE_DIR/user-R"
+    export EMACS_DIR="$BASE/user-emacs"
+    export R_LIBS_USER="$BASE/user-R"
     export R_LIBS="$R_LIBS_USER"
+    ## needed for quarto
+    export XDG_CACHE_HOME=/tmp/xdg_cache_home
+    export XDG_DATA_HOME=/tmp/xdg_data_home
+    export XDG_RUNTIME_DIR=/tmp/xdg_runtime_home
 
 %runscript
     mkdir -p $EMACS_DIR

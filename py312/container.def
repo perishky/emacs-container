@@ -23,9 +23,11 @@ From: ubuntu:24.04
 	libcairo2 \
 	libcairo2-dev \
 	libcurl4-openssl-dev \
-        libfontconfig1-dev \
+	libdbus-glib-1-dev \
+	libfontconfig1-dev \
         libfribidi-dev \
         libfreetype6-dev \
+	libgirepository1.0-dev \
         libharfbuzz-dev \
         libjpeg-dev \
         libpng-dev \
@@ -40,6 +42,7 @@ From: ubuntu:24.04
         software-properties-common \
 	sudo \
         tree \
+	virtualenv \
         vim \
         wget
 	
@@ -73,12 +76,16 @@ From: ubuntu:24.04
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     export BASE="/opt/ide"
     export EMACS_DIR="$BASE/user-emacs"
-    export PYTHONPATH="$BASE/user-python/local/lib/python3.12/dist-packages"
+    export PYTHONPATH="$BASE/user-python"
+    ## needed for quarto
+    export XDG_CACHE_HOME=/tmp/xdg_cache_home
+    export XDG_DATA_HOME=/tmp/xdg_data_home
+    export XDG_RUNTIME_DIR=/tmp/xdg_runtime_home
  
 %runscript
     mkdir -p $EMACS_DIR
     mkdir -p $PYTHONPATH
-    exec env HOME=$EMACS_BASE emacs --user="" -nw "$@"
+    exec env HOME=$EMACS_DIR emacs --user="" -nw "$@"
     
 %labels
     Author Matthew Suderman

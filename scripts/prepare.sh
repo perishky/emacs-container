@@ -11,11 +11,12 @@ apptainer exec -B $(pwd)/out:$BASE out/$NAME.sif bash prepare.sh
 
 ## create script for running emacs in the container
 SCRIPT=out/run-emacs.sh
-cat > $SCRIPT <<-"EOF"
+cat <<EOF > $SCRIPT
 #!/bin/bash
 
-EXT_BASE=\$0
+EXT_BASE=\$(dirname \$0)
+EXT_BASE=\$(realpath \$EXT_BASE)
 
-apptainer exec -B \$EXT_BASE:$BASE -B \$(pwd) \$EXT_BASE/$NAME.sif "$@"
+apptainer run -B \$EXT_BASE:$BASE -B \$(pwd) \$EXT_BASE/$NAME.sif "\$@"
 
 EOF
