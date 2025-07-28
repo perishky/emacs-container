@@ -6,6 +6,7 @@ cran_packages = c(
   "dplyr",
   "e1071",
   "Cairo",
+  "easyPubMed",
   "ess",
   "GGally",
   "ggplot2",
@@ -44,6 +45,8 @@ bioc_packages = c(
 
 git_packages = c(
   "mlr-org/mlr3extralearners@*release",
+  "yousefi138/geograbi",
+  "perishky/eval.save",
   "perishky/r_jive",
   "perishky/meffonym",
   "perishky/ewaff",
