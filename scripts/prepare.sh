@@ -26,6 +26,8 @@ EXT_BASE=\$(dirname \$(realpath \$0))
 # fi
 # apptainer run -B \$EXT_BASE:$BASE -B \$(pwd) \$BINDS \$EXT_BASE/$NAME.sif \$FILES
 
-apptainer run -B \$EXT_BASE:$BASE -B \$(pwd) \$EXT_BASE/$NAME.sif 
+WD=\$(realpath \$(pwd))
+
+apptainer run -B \$EXT_BASE:$BASE -B \$WD \$EXT_BASE/$NAME.sif \$WD
 
 EOF
