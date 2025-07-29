@@ -2,7 +2,7 @@
 
 ## Installation
 
-### Create definition
+### 1. Create definition
 
 Create a directory DIR_NAME and populate with definition files:
 
@@ -16,7 +16,7 @@ Prepared examples:
 
 - [Emacs 30.1 with Python 3.12](py312) 
 
-### Build container image
+### 2. Build container image
 
 Uses DIR_NAME/container.def to create an apptainer container.
 
@@ -24,7 +24,7 @@ Uses DIR_NAME/container.def to create an apptainer container.
 bash scripts/build.sh DIR_NAME
 ```
 
-### Install config files and packages 
+### 3. Install config files and packages 
 
 Runs DIR_NAME/prepare.sh in the container and creates a script 
 for running emacs in the container.
@@ -33,9 +33,19 @@ for running emacs in the container.
 bash scripts/prepare.sh DIR_NAME
 ```
 
-### Run emacs in the container
+### 4. Run emacs in the container
 
 ```
 bash DIR_NAME/out/run-emacs.sh [file/to/edit]
 ```
 
+### Troubleshooting
+
+#### `ERROR  : Installation issue: starter-suid doesn't have setuid bit set`
+
+If `run-emacs.sh` fails with this error,
+then apptainer may need the `--fakeroot` option to run successfully.
+
+```
+apptainer run --fakeroot -B ... 
+```
