@@ -3,6 +3,7 @@ cran_packages = c(
   "coin",
   "cowplot",
   "data.table",
+  "devtools",
   "dplyr",
   "e1071",
   "Cairo",
