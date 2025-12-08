@@ -66,24 +66,6 @@ From: ubuntu:24.04
         python3-venv 
     ln -sf /usr/bin/python3 /usr/bin/python
 
-    python3 -m pip install --upgrade pip
-    python3 -m pip install \
-        jupyter \
-        snakemake \
-        jupytext \
-        nibabel \
-        scikit-image \
-        itk \
-        plotly \
-        pooch \
-        torch \
-        torchvision \
-        gensim \
-        transformers \
-        sentence-transformers \
-        nltk \
-        wordcloud
-    
     # clean up
     apt-get autoremove -y
     apt-get clean
@@ -91,10 +73,10 @@ From: ubuntu:24.04
 
 %environment
     export LC_ALL=C
-    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     export BASE="/opt/ide"
     export EMACS_DIR="$BASE/user-emacs"
     export PYTHONPATH="$BASE/user-python"
+    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PYTHONPATH/bin
     ## needed for quarto
     export XDG_CACHE_HOME=/tmp/xdg_cache_home
     export XDG_DATA_HOME=/tmp/xdg_data_home

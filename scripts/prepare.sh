@@ -16,18 +16,18 @@ cat <<EOF > $SCRIPT
 
 EXT_BASE=\$(dirname \$(realpath \$0))
 
-## filename arguments can be complicated for containers
-## when they need to bindings
-# FILES=""
-# BINDS=""
-# if [ "$#" -gt 0 ]; then
-#     FILES=\$(printf -- '%s ' \$(realpath "\$@"))
-#     BINDS=\$(printf -- '-B %s ' \$(dirname \$(realpath "\$@")))
-# fi
-# apptainer run -B \$EXT_BASE:$BASE -B \$(pwd) \$BINDS \$EXT_BASE/$NAME.sif \$FILES
-
 WD=\$(realpath \$(pwd))
 
-apptainer run -B \$EXT_BASE:$BASE -B \$WD \$EXT_BASE/$NAME.sif \$WD
+BINDS="-B $WD"
+for ARG in "$@"; do
+    ABS_PATH=$(realpath "$ARG" 2>/dev/null)
+    if [ $? -eq 0 ]; then
+	BINDS="${BINDS} -B ${ABS_PATH}"
+    else
+	echo "Warning: could not resolve '${ARG}'"
+    fi
+done
+
+apptainer run -B \$EXT_BASE:$BASE \$BINDS \$EXT_BASE/$NAME.sif \$WD
 
 EOF
