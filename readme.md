@@ -63,7 +63,7 @@ bash DIR_NAME/out/run-emacs.sh
 #### Copilot key reference
 
 | key | command | 
-|-----+---------|
+|-----|---------|
 | `<tab>`   | copilot-accept-completion | 
 | `C-<tab>` | copilot-accept-completion-by-word | 
 
@@ -80,14 +80,14 @@ bash DIR_NAME/out/run-emacs.sh
 #### Copilot chat key reference
 
 | key | command |
-|-----+---------|
+|-----|---------|
 | `C-c C-c` | send prompt |
 | `C-c C-l` | `(copilot-chat-list)` |
 
 #### Copilot chat buffer list
 
 | key | command |
-|-----+---------|
+|-----|---------|
 | `<ret>` | (de)select buffer |
 | `C-c C-c` | clear buffer list |
 | `g` | refresh buffer list |
