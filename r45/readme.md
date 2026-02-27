@@ -1,5 +1,8 @@
 # Emacs 30.1 with R 4.5
 
+
+## Rust
+
 Added rust
 
 ```
@@ -12,7 +15,7 @@ In emacs, install rust-mode (as described https://github.com/rust-lang/rust-mode
 M-x package-install rust-mode
 ```
 
-And put this in `~/.emacs`
+And put the following in `dot-emacs` 
 
 ```
 (require 'rust-mode)
@@ -22,3 +25,4 @@ And put this in `~/.emacs`
 (add-hook 'rust-mode-hook
           (lambda () (prettify-symbols-mode)))
 ```
+

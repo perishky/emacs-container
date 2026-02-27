@@ -96,9 +96,13 @@
 
 (add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
 
+;; R modes
+(add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
+(add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
+(add-to-list 'auto-mode-alist '("\\.Rmd" . poly-quarto-mode))
+(add-to-list 'auto-mode-alist '("\\.rmd" . poly-quarto-mode))
 
-
-;; running python code
+;; Python
 (defun poly-python-eval-region (beg end msg)
   (python-shell-send-region beg end nil msg t))
 
@@ -110,7 +114,7 @@
 (with-eval-after-load 'python
   (define-key python-mode-map (kbd "C-c C-c") 'polymode-eval-chunk))
 
-
+;; copilot
 (use-package copilot
   :ensure t
   :hook (prog-mode . copilot-mode)
@@ -121,3 +125,12 @@
 	      ("C-TAB" . copilot-accept-completion-by-word)
 	      ("C-n" . copilot-next-completion)
 	      ("C-p" . copilot-previous-completion)))
+
+(use-package copilot-chat
+  :ensure t
+  :after (request org markdown-mode) ;; dependencies the package expects
+  :config
+  ;; optional: set UI style
+  (setq copilot-chat-frontend 'markdown) ;; or 'org, 'shell-maker
+  )
+

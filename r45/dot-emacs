@@ -104,4 +104,23 @@
 (add-to-list 'auto-mode-alist '("\\.rmd" . poly-quarto-mode))
 
 
+;; copilot
+(use-package copilot
+  :ensure t
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+	      ("<tab>" . copilot-accept-completion)
+	      ("TAB" . copilot-accept-completion)
+	      ("C-<tab>" . copilot-accept-completion-by-word)
+	      ("C-TAB" . copilot-accept-completion-by-word)
+	      ("C-n" . copilot-next-completion)
+	      ("C-p" . copilot-previous-completion)))
+
+(use-package copilot-chat
+  :ensure t
+  :after (request org markdown-mode) ;; dependencies the package expects
+  :config
+  ;; optional: set UI style
+  (setq copilot-chat-frontend 'markdown) ;; or 'org, 'shell-maker
+  )
 
