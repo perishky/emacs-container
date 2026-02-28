@@ -51,7 +51,9 @@ git_packages = c(
   "perishky/r_jive",
   "perishky/meffonym",
   "perishky/ewaff",
-  "perishky/meffil")
+  "perishky/dmrff",
+  "perishky/meffil",
+  "jhrcook/mustashe")
 
 installed_packages = rownames(installed.packages())
 
@@ -76,5 +78,7 @@ for (repo in git_packages) {
     installed_packages = rownames(installed.packages())
   }
 }
+
+
 
 
